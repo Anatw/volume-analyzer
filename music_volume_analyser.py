@@ -99,10 +99,9 @@ def print_exceeding_clusters():
         print("\n")
 
 
-def generate_clusters_for_servo_usage():
+def generate_clusters_for_servo_usage(print_clusters_details=False):
     _exceeding_indexes_clusters = exceeding_indexes_clusters()
     clusters_for_servo_usage = {}
-    audio_data_dict = analysed_normalized_rms_dict()
     for track_name, clusters_dict in _exceeding_indexes_clusters.items():
         clusters_for_servo_usage[track_name] = {}
         for cluster_index, (distance, clusters) in enumerate(clusters_dict.items()):
@@ -133,23 +132,17 @@ def generate_clusters_for_servo_usage():
     for audio_name_index, track_name in enumerate(audio_name_list):
         clusters_for_servo_usage[track_name]["sample_rate"] = sample_rate_list[audio_name_index]
             # "rms_values": sound_rms_dict[track_name],
-    clusters_for_servo_usage = json.dumps(clusters_for_servo_usage)
-    print(clusters_for_servo_usage)
-    # for track in clusters_for_servo_usage.items():
-    #     print(f"track name: {track[0]}")
-    #     # for cluser_index in track[1].keys():
-    #     for key, values_for_servo in track[1].items():
-    #         print(f"cluster index: {key}")
-    #         print(values_for_servo)
-
-
-def get_num_arguments_passed(*args):
-    return sum(args)
+    print(json.dumps(clusters_for_servo_usage))
+    if print_clusters_details:
+        for track in clusters_for_servo_usage.items():
+            print(f"track name: {track[0]}")
+            for key, values_for_servo in track[1].items():
+                print(f"cluster index: {key}")
+                print(values_for_servo)
 
 
 def generate_graphs(generate_rms=True, generate_power=False, generate_volume=False):
-    # Load the audio file
-    num_arguments_passed = get_num_arguments_passed(generate_rms, generate_power, generate_volume)
+    num_arguments_passed = sum((generate_rms, generate_power, generate_volume))
     if not num_arguments_passed:
         print("Didn't generate any graphs, no parameters were selected")
         return
@@ -158,8 +151,6 @@ def generate_graphs(generate_rms=True, generate_power=False, generate_volume=Fal
         if os.path.isfile(os.path.join(folder_path, audio_file)) and \
                 audio_file.lower().endswith(".mp3"):
             audio_path = os.path.join(folder_path, audio_file)
-            y, sr = librosa.load(audio_path, sr=None)
-            S, phase = librosa.magphase(librosa.stft(y))
             fig, ax = plt.subplots(nrows=num_arguments_passed, sharex=True)
             rms = rms_dict[audio_file]
             graph_index = 0
@@ -173,6 +164,8 @@ def generate_graphs(generate_rms=True, generate_power=False, generate_volume=Fal
                     ax[graph_index].set_xticklabels(enumerate_of_rms_values[::10])
                     graph_index += 1
                 if generate_power:
+                    y, sr = librosa.load(audio_path, sr=None)
+                    S, phase = librosa.magphase(librosa.stft(y))
                     librosa.display.specshow(librosa.amplitude_to_db(S, ref=np.max), y_axis='log', x_axis='time', ax=ax[graph_index])
                     ax[graph_index].set(title='log Power spectrogram')
                     librosa.magphase(librosa.stft(y, window=np.ones, center=False))[0]
@@ -199,10 +192,10 @@ def generate_graphs(generate_rms=True, generate_power=False, generate_volume=Fal
 
 
 def main():
-    # analysed_normalized_rms_dict()
-    # generate_graphs()
-    # exceeding_indexes_clusters()
-    # print_exceeding_clusters()
+    analysed_normalized_rms_dict()
+    generate_graphs(generate_power=True, generate_volume=True)
+    exceeding_indexes_clusters()
+    print_exceeding_clusters()
     generate_clusters_for_servo_usage()
 
 
