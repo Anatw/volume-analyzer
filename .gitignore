@@ -1,0 +1,12 @@
+.idea/
+test_env/
+/out/
+__pycache__/
+
+*.pyc
+*.png
+*.json
+*.yaml
+*.yml
+*.txt
+
