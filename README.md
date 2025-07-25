@@ -58,18 +58,18 @@ Each list contains `1` and `0` values—one per RMS frame.
 
 ## Key Functions
 
-### `analysed_normalized_rms_dict(...)`
+### `analysed_normalized_rms_dict()`
 
 - Loads and analyzes MP3 audio
 - Returns normalized RMS energy values per file
 
-### `exceeding_indexes_clusters(...)`
+### `exceeding_indexes_clusters()`
 
 - Applies thresholding to RMS data
 - Groups adjacent loud segments into clusters
 - Supports multiple `distance_allowed_between_clusters` settings
 
-### `generate_clusters_for_servo_usage(...)`
+### `generate_clusters_for_servo_usage()`
 
 - Converts clusters into binary movement maps (1=open, 0=closed)
 - Returns multiple maps per file with varying cluster sensitivities
