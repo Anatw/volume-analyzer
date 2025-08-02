@@ -112,5 +112,5 @@ MIT License
 
 ## ✍️ Author
 
-Developed by [Anat Wax](https://github.com/Anatw)  
+Developed by [Anat Wax](https://github.com/Anatw)
 Part of the [Animatronic Menagerie](https://theanimatronicmenagerie.wordpress.com/)
