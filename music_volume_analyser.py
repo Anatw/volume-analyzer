@@ -5,6 +5,8 @@ import librosa
 import numpy as np
 import librosa.display
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use("Qt5Agg")
 
 folder_path = r"H:\samuel\Raven\raven sounds"
 sound_rms_dict = {}
